@@ -1,0 +1,31 @@
+{
+	"follow_symlinks": false,
+	"enable_logging": true,
+	"routes": {
+		"/": "index.html",
+		"/about": "about.html",
+		"404": "404.html",
+		"/favicon.ico": "favicon.ico"
+	},
+	"static_directory": "static",
+    "directory_listing": false,
+	"server": {
+		"host": "0.0.0.0",
+		"httpport": 8080,
+		"httpsport": 8443
+	},
+	"ssl": {
+		"cert": "/etc/letsencrypt/live/your.website.domain/fullchain.pem",
+		"key": "/etc/letsencrypt/live/your.website.domain/privkey.pem"
+	},
+	"uploaded_files": {
+		"raw_directory": "tmp",
+		"directed_to": "img"
+	},
+	"template_directory": "rendered_templates",
+	"template_variables": {
+		"favicon_path": "favicon.ico",
+		"upload_content_name": "file-input",
+		"upload_api_address": "/upload_file"
+	}
+}
