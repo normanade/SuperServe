@@ -1,5 +1,5 @@
 [package]
-name = "super_serve"
+name = "superserve"
 version = "0.1.0"
 authors = ["normanade"]
 edition = "2018"

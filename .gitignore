@@ -16,7 +16,5 @@ Cargo.lock
 /rendered_templates
 /tmp
 
-
 # Added by cargo
-
 /target

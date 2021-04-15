@@ -38,8 +38,8 @@ The configuration file may seem complicate at first glance. Below will give an e
 - "directory_listing": If css/js files are included indeed, you may want to serve them to the users instead of using cdn. Given the circumstance, it is reasonable to allow users to list all these files (which are contained in seperated folders). **Serving js/css files hasn't been made available as an option yet, if any configuration or modification should be made, please edit `src/main.rs` directly.**
 - "server": Configuration for the server.
     + "host": set `0.0.0.0` for accessing the files from another device by the server's ip address; set `127.0.0.1` or `localhost` for self-testing. If you use [nginx](https://nginx.com/) or other reserse proxy services, the address for self-testing should be your choice.
-    + "httpport": port for accessing by http. Note that if https are enabled, then http requests will be automatically redirected to https.
-    + "httpsport": enable https by setting value to a valid port; disable by setting value to -1.
+    + "httpport": port for accessing by http. Note that when https are enabled, http requests will be automatically redirected to https.
+    + "httpsport": enable https by setting value to a valid port. However, to make https really working, you will need to specify location for ssl keys in config.
 - "ssl": Generating SSL keys will be discussed later thoroughly.
     + "cert": Location to cert file, or named public key.
     + "key": Location to key file, or named private key.

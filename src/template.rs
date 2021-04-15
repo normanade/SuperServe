@@ -46,7 +46,7 @@ fn engine_write_templates(templates: serde_json::map::Iter) {
     }
 }
 
-// pass all the static HTML files to validate and render
+/// pass all the static HTML files to validate and render
 pub fn render_templates() {
     let config = get_config();
     let template_dir = config["template_directory"].to_string().replace("\"", "");

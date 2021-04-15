@@ -51,12 +51,18 @@ async fn main() -> std::io::Result<()> {
 
     let host = config["server"]["host"].to_string().replace("\"", "");
     let httpport = config["server"]["httpport"].as_u64().unwrap();
-    let httpsport = match config["server"]["httpsport"].as_u64() {
-        Some(u) => u,
-        None => 0
-    };
+    let httpsport = config["server"]["httpsport"].as_u64().unwrap();
 
-    let server = HttpServer::new(move || {
+    println!(
+        "\nYour server is up and running at https://{}:{}/",
+        host, httpsport
+    );
+    println!(
+        "All incoming requests at http://{}:{}/ will be redirected to https.\n",
+        host, httpport
+    );
+
+    HttpServer::new(move || {
         App::new()
         // Enable the logger middleware.
         .wrap(middleware::Logger::default())
@@ -101,34 +107,8 @@ async fn main() -> std::io::Result<()> {
         )
         // serve HTTP GET requests with routing rules from `routes`
         .route("/{route:.*}", web::get().to(serve_routed))
-    });
-
-    if httpsport != 0 {
-        println!(
-            "\nYour server is up and running at https://{}:{}/",
-            host, httpsport
-        );
-        println!(
-            "All incoming requests at http://{}:{}/ will be redirected to https.\n",
-            host, httpport
-        );
-
-        server
-        .bind(format!("{}:{}", host, httpport))?
-        .bind_rustls(format!("{}:{}", host, httpsport), getssl_config())?
-        .run().await
-    }
-    else {
-        println!(
-            "\nYour server is up and running at http://{}:{}/",
-            host, httpport
-        );
-        println!(
-            "HTTPS is disabled; change `server->httpsport` in config file to enable\n",
-        );
-
-        server
-        .bind(format!("{}:{}", host, httpport))?
-        .run().await
-    }
+    })
+    .bind(format!("{}:{}", host, httpport))?
+    .bind_rustls(format!("{}:{}", host, httpsport), getssl_config())?
+    .run().await
 }
