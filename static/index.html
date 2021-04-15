@@ -1,0 +1,285 @@
+<!doctype html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha256-93wNFzm2GO3EoByj9rKZCwGjAJAwr0nujPaOgwUt8ZQ=" crossorigin="anonymous">
+    
+    <!-- Upload File Plugin -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-fileinput@5.1.3/css/fileinput.min.css"
+        integrity="sha256-igT9fbypHqI8WoAthMVXurWQ0WTmvWf3TozazrUwQEw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/owp.glyphicons@1.1.0/glyphicons.min.css"
+        integrity="sha256-b5dbmrf6CX4vD4R3tYJ2yoguLC/xJY50j013TJQTkjE=" crossorigin="anonymous">
+
+    <!-- Favicon -->
+    <!-- TODO: improve this part referring to https://v4.bootcss.com/docs/examples/sticky-footer-navbar/ -->
+    <link rel="shortcut icon" href="{{favicon_path}}" type="image/x-icon" />
+
+    <title>Hello, world!</title>
+</head>
+
+<body class="d-flex flex-column vh-100">
+    <!-- Navigation Bar -->
+    <header role="navigation" class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <a class="navbar-brand mb-0" href="">
+            <img src="{{favicon_path}}" width="30" height="30" class="d-inline-block align-top" alt=""
+                loading="lazy">
+            <b>Image Hosting</b>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav mr-auto ml-3">
+                <a class="nav-item nav-link active" href="">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="about">About</a>
+            </div>
+            <ul class="navbar-nav navbar-right mx-3">
+                <li class="nav-item dropdown">
+                    <div class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        English
+                    </div>
+                    <div class="dropdown-menu" style="min-width:0" aria-labelledby="navbarDropdown">
+                        <button type="button" class="dropdown-item">简体中文</button>
+                        <button type="button" class="dropdown-item">繁體中文</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <main role="main" class="container flex-shrink-1 my-3 text-monospace">
+        <!-- Hint for user -->
+        <div class="list-group list-group-horizontal-md mb-4">
+            <button type="button" id="initialise" class="list-group-item list-group-item-action py-1 active">
+                <h6 class="font-weight-bold">Upload</h6>
+                <small>
+                    Each image mustn't exceed 5 MB.
+                </small>
+            </button>
+            <button type="button" id="posting" class="list-group-item list-group-item-action py-1" disabled>
+                <h6 class="font-weight-bold">Posting</h6>
+                <small>
+                    Usually less than 5 second.
+                </small>
+            </button>
+            <button type="button" id="finished" class="list-group-item list-group-item-action py-1" disabled>
+                <h6 class="font-weight-bold">Result</h6>
+                <small>
+                    Example messages wrote here.
+                </small>
+            </button>
+        </div>
+
+        <div id="file-upload-wrapper">
+            <div class="file-loading flex-shrink-0">
+                <input id="file-input" name="file-input" type="file" accept="image/*"
+                    data-msg-placeholder="Select your photo for uploading...">
+            </div>
+        </div>
+
+        <div id="img-posting-wrapper">
+            <div class="d-flex" style="height: 35vh;">
+                <div class="flex-fill align-self-center">
+                    <div class="h5 text-info text-center">
+                        Post Progress:  <span id="progress-span">60</span>%
+                    </div>
+                    <div class="myprogress w-75 mx-auto">
+                        <div class="progress rounded-0 bg-white">
+                            <div class="progress-bar rounded-right bg-info progress-bar-striped active" role="progressbar" style="width:60%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="show-result-wrapper">
+            <img id="result-pic">
+        </div>
+    </main>
+
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <span class="text-muted text-monospace">SuperServe, self-image-hosting solution</span>
+        </div>
+    </footer>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha256-/ijcOLwFf26xEYAjW75FizKVo5tnTYiQddPZoLUHHZ8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+        integrity="sha256-2JaAhvdQnfNMMnhWPauHOZ2k+dzftBmBjjownu3HC4g=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-fileinput@5.1.3/js/fileinput.min.js"
+        integrity="sha256-5xv6fO0cotMuOWRgOk76JcCjG1KIu2rJMA+koLTRV+8=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#file-input").fileinput({
+                browseOnZoneClick: true,
+                browseClass: "btn btn-success",
+                browseLabel: "Pick Image",
+                browseIcon: "<i class=\"glyphicon glyphicon-picture\"></i> ",
+                removeClass: "btn btn-danger",
+                removeLabel: "Clear",
+                uploadClass: "btn btn-primary",
+                uploadUrl: "{{upload_api_address}}",
+                maxFileSize: 5120,
+                // enableResumableUpload: true,
+                fileActionSettings: {
+                    showRemove: false,
+                    showUpload: false,
+                    showZoom: true
+                },
+            });
+            $("#img-posting-wrapper").hide();
+            $("#show-result-wrapper").hide();
+        });
+
+        var file_posted = false;
+        var sent_file_post_request = false;
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        $("#file-input").on('fileuploaded', function(event, data, previewId, index) {
+            var response = data.response;
+            if(response.error === undefined) {
+                $("#result-pic").attr("src", response.pic_url);
+                file_posted = false;
+                sent_file_post_request = false;
+
+                $("#posting").removeAttr("disabled");
+                $("#posting").click();
+            }
+        });
+
+        $("#posting").on('click', function(){
+            $("#initialise").removeClass("active");
+            $("#file-upload-wrapper").hide();
+
+            $("#posting").addClass("active");
+            $("#img-posting-wrapper").show();
+
+            $("#finished").removeClass("active");
+            $("#show-result-wrapper").hide();
+
+            if (file_posted === false) {
+                post_file();
+            }
+        });
+
+        $("#initialise").on('click', function(){
+            $("#initialise").addClass("active");
+            $("#file-upload-wrapper").show();
+
+            $("#posting").removeClass("active");
+            $("#img-posting-wrapper").hide();
+
+            $("#finished").removeClass("active");
+            $("#show-result-wrapper").hide();
+        });
+
+        async function post_file() {
+            if (sent_file_post_request === false) {
+                sent_file_post_request = true;
+            }
+
+            $('#progress-span').prop('Counter', 0);
+            $('#progress-span').animate(
+                {
+                    Counter: $('#progress-span').text()
+                },
+                {
+                    duration: 900,
+                    step: function (now){
+                        $('#progress-span').text(Math.ceil(now));
+                    }
+                }
+            );
+
+            await sleep(3000);
+
+            // on finish change
+            // `$('#progress-span').text()` and
+            // `$(".myprogress .progress .progress-bar").width()` simultaneously;
+            // change `file_posted` to true.
+            $('#progress-span').text(100);
+            $('#progress-span').animate(
+                {
+                    Counter: $('#progress-span').text()
+                },
+                {
+                    duration: 600,
+                    step: function (now){
+                        $('#progress-span').text(Math.ceil(now));
+                    }
+                }
+            );
+            $(".myprogress .progress .progress-bar").width("100%");
+
+            file_posted = true;
+
+            // redirect page to Result page.
+            await sleep(700);
+            $("#finished").removeAttr("disabled");
+            $("#finished").click();
+        }
+
+        $("#finished").on('click', function(){
+            $("#finished").addClass("active");
+            $("#show-result-wrapper").show();
+            
+            $("#initialise").removeClass("active");
+            $("#file-upload-wrapper").hide();
+
+            $("#posting").removeClass("active");
+            $("#img-posting-wrapper").hide();
+        });
+    </script>
+
+    <style>
+        .myprogress{
+            border-top: 1vh solid #1c2647;
+            border-bottom: 1vh solid #1c2647;
+            overflow: visible;
+            position: relative;
+        }
+        .myprogress:before,
+        .myprogress:after{
+            content: "";
+            width: 1.2%;
+            background: #1c2647;
+            position: absolute;
+            top: 0;
+            left: -1.2%;
+            bottom: 0;
+        }
+        .myprogress:after{
+            left: auto;
+            right: -1.2%;
+        }
+        .myprogress .progress-bar{
+            -webkit-animation: 2s linear 0s normal none infinite running progress-bar-stripes,animate-positive 1s;
+            animation: 2s linear 0s normal none infinite running progress-bar-stripes,animate-positive 1s;
+        }
+        @-webkit-keyframes animate-positive{
+            0%{ width: 0; }
+        }
+        @keyframes animate-positive {
+            0%{ width: 0; }
+        }
+    </style>
+</body>
+
+</html>
